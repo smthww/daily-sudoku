@@ -23,7 +23,7 @@ body {
   font-family: ui-rounded, "SF Pro Rounded", "PingFang SC", system-ui, sans-serif;
 }
 
-button, select { font: inherit; }
+button, select, input { font: inherit; }
 button { color: inherit; }
 
 .app {
@@ -49,9 +49,10 @@ select, button { border: 0; border-radius: 12px; cursor: pointer; }
 select { width: 100%; padding: 11px 12px; color: var(--ink); background: var(--paper); outline: 1px solid #d9d2c3; }
 button { padding: 11px 16px; background: #e8e3d7; transition: transform .15s, background .15s; }
 button:hover { transform: translateY(-1px); background: #ddd6c7; }
-button:focus-visible, select:focus-visible, .cell:focus-visible { outline: 3px solid rgba(186,107,80,.5); outline-offset: 2px; }
+button:focus-visible, select:focus-visible, input:focus-visible, .cell:focus-visible { outline: 3px solid rgba(186,107,80,.5); outline-offset: 2px; }
 .primary { color: white; background: var(--sage-dark); font-weight: 750; }
 .primary:hover { background: #43584a; }
+.player-button { max-width: 150px; overflow: hidden; color: var(--sage-dark); background: #e3e9e1; font-weight: 750; text-overflow: ellipsis; white-space: nowrap; }
 
 .game-area { gap: 28px; align-items: flex-start; }
 .game-area > div:first-child { flex: 1; max-width: 620px; }
@@ -61,8 +62,12 @@ button:focus-visible, select:focus-visible, .cell:focus-visible { outline: 3px s
 .start-screen[hidden] { display: none; }
 .start-mark { color: var(--terracotta); font-size: 2.7rem; }
 .start-screen h2 { margin: 9px 0 6px; font-family: Georgia, "Songti SC", serif; font-size: clamp(1.7rem, 5vw, 2.4rem); font-weight: 500; }
-.start-screen p { margin: 0 0 22px; color: var(--muted); }
+.start-screen p { margin: 0 0 18px; color: var(--muted); }
 .start-screen button { min-width: 138px; }
+.nickname-field { width: min(260px, 86%); margin-bottom: 4px; text-align: left; }
+.nickname-field span { display: block; margin: 0 0 6px 4px; color: var(--muted); font-size: .75rem; }
+.nickname-field input { width: 100%; padding: 12px 14px; border: 1px solid #d4cbbb; border-radius: 12px; color: var(--ink); background: white; }
+.field-error { min-height: 1.3em; margin: 5px 0 8px !important; color: #a43d32 !important; font-size: .78rem; }
 .cell { display: grid; place-items: center; min-width: 0; padding: 0; border-radius: 0; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); background: transparent; font-size: clamp(1.05rem, 4.2vw, 1.85rem); font-weight: 600; font-variant-numeric: tabular-nums; }
 .cell:hover { transform: none; background: #f1ebdf; }
 .cell:nth-child(9n) { border-right: 0; }
@@ -93,12 +98,33 @@ button:focus-visible, select:focus-visible, .cell:focus-visible { outline: 3px s
 .number-pad button:hover { background: var(--cream); }
 .actions { display: grid; gap: 8px; margin-top: 14px; }
 .actions button:last-child { color: white; background: var(--terracotta); }
+.ranking-card { margin-top: 18px; padding-top: 17px; border-top: 1px solid rgba(83,106,91,.18); }
+.ranking-heading { display: flex; align-items: end; justify-content: space-between; margin-bottom: 10px; }
+.ranking-heading span { color: var(--muted); font-size: .68rem; }
+.ranking-heading h2 { margin: 1px 0 0; font-family: Georgia, "Songti SC", serif; font-size: 1.25rem; font-weight: 500; }
+.text-button { padding: 5px; color: var(--terracotta); background: transparent; font-size: .75rem; }
+.text-button:hover { transform: none; background: transparent; text-decoration: underline; }
+.ranking-list { display: grid; gap: 6px; }
+.ranking-row { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 7px; min-height: 32px; padding: 5px 8px; border-radius: 9px; background: rgba(251,248,241,.78); font-size: .78rem; }
+.ranking-row.me { outline: 2px solid rgba(186,107,80,.42); background: #fff5eb; }
+.ranking-rank { color: var(--terracotta); font-weight: 850; text-align: center; }
+.ranking-name { overflow: hidden; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.ranking-time { font-variant-numeric: tabular-nums; }
+.ranking-time small { display: block; color: var(--muted); font-size: .62rem; text-align: right; }
+.muted-list { padding: 10px 4px; color: var(--muted); font-size: .76rem; text-align: center; }
 .dialog { position: fixed; inset: 0; z-index: 5; display: grid; place-items: center; padding: 20px; background: rgba(40,52,47,.58); backdrop-filter: blur(7px); }
 .dialog[hidden] { display: none; }
 .dialog-card { width: min(390px, 100%); padding: 38px; border-radius: 26px; background: var(--paper); box-shadow: var(--shadow); text-align: center; }
 .celebration { color: var(--terracotta); font-size: 2.6rem; }
 .dialog h2 { margin: 9px 0; font-family: Georgia, "Songti SC", serif; font-size: 2rem; }
 .dialog p { color: var(--muted); }
+.submit-message { min-height: 1.4em; font-size: .84rem; }
+.dialog-actions { display: flex; justify-content: center; gap: 8px; margin-top: 18px; }
+.ranking-dialog-card { position: relative; max-height: min(720px, 88vh); overflow: auto; text-align: left; }
+.ranking-dialog-card > h2, .ranking-dialog-card > p, .ranking-dialog-card > .celebration { display: block; text-align: center; }
+.close-button { position: absolute; top: 13px; right: 13px; width: 38px; height: 38px; padding: 0; border-radius: 50%; font-size: 1.5rem; }
+.full-ranking { max-height: 470px; overflow-y: auto; padding: 0; }
+.full-ranking .ranking-row { grid-template-columns: 32px 1fr auto; min-height: 40px; font-size: .88rem; }
 
 @media (max-width: 760px) {
   .app { width: min(560px, calc(100% - 20px)); padding-top: 24px; }
@@ -107,6 +133,7 @@ button:focus-visible, select:focus-visible, .cell:focus-visible { outline: 3px s
   .number-pad { grid-template-columns: repeat(9, 1fr); gap: 4px; }
   .number-pad button { aspect-ratio: auto; padding: 11px 0; }
   .actions { grid-template-columns: repeat(3, 1fr); }
+  .ranking-card { padding-top: 15px; }
 }
 
 @media (max-width: 440px) {
@@ -115,4 +142,6 @@ button:focus-visible, select:focus-visible, .cell:focus-visible { outline: 3px s
   .timer-card { min-width: 94px; padding: 10px; }
   .toolbar { padding: 10px; }
   .toolbar button { padding-inline: 12px; }
+  .player-button { max-width: 112px; }
+  .dialog-card { padding: 30px 22px; }
 }

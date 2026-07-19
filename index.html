@@ -40,7 +40,8 @@
             <option value="hard">挑战</option>
           </select>
         </label>
-        <button id="new-game" class="primary" type="button">生成新题</button>
+        <button id="player-button" class="player-button" type="button" title="修改昵称">未登录</button>
+        <button id="new-game" class="primary" type="button">重新开始</button>
       </section>
 
       <section id="game-area" class="game-area waiting">
@@ -50,7 +51,12 @@
             <div id="start-screen" class="start-screen">
               <span class="start-mark">✦</span>
               <h2>准备好了吗？</h2>
-              <p>选择难度，开始今天的数独。</p>
+              <p>输入昵称，和朋友一起挑战今日题目。</p>
+              <label class="nickname-field">
+                <span>你的昵称</span>
+                <input id="nickname" type="text" minlength="2" maxlength="12" autocomplete="nickname" placeholder="2–12 个字" />
+              </label>
+              <p id="nickname-error" class="field-error" aria-live="polite"></p>
               <button id="start-game" class="primary" type="button">开始游戏</button>
             </div>
           </div>
@@ -64,6 +70,16 @@
             <button id="hint" type="button">提示</button>
             <button id="check" type="button">检查答案</button>
           </div>
+          <section class="ranking-card" aria-labelledby="ranking-title">
+            <div class="ranking-heading">
+              <div>
+                <span>今日同难度</span>
+                <h2 id="ranking-title">好友榜</h2>
+              </div>
+              <button id="show-ranking" class="text-button" type="button">查看全部</button>
+            </div>
+            <div id="ranking-preview" class="ranking-list muted-list">开始游戏后显示排行榜</div>
+          </section>
         </aside>
       </section>
     </main>
@@ -73,10 +89,26 @@
         <span class="celebration">✦</span>
         <h2 id="dialog-title">完成得漂亮！</h2>
         <p id="dialog-message"></p>
-        <button id="play-again" class="primary" type="button">再来一局</button>
+        <p id="submit-message" class="submit-message"></p>
+        <div class="dialog-actions">
+          <button id="dialog-ranking" type="button">查看排行榜</button>
+          <button id="play-again" class="primary" type="button">重新挑战</button>
+        </div>
       </div>
     </div>
 
+    <div id="ranking-dialog" class="dialog" hidden>
+      <div class="dialog-card ranking-dialog-card" role="dialog" aria-modal="true" aria-labelledby="full-ranking-title">
+        <button id="close-ranking" class="close-button" type="button" aria-label="关闭排行榜">×</button>
+        <span class="celebration">♜</span>
+        <h2 id="full-ranking-title">今日排行榜</h2>
+        <p id="ranking-subtitle"></p>
+        <div id="ranking-full" class="ranking-list full-ranking muted-list">正在读取…</div>
+      </div>
+    </div>
+
+    <script src="vendor/cloudbase.full.js"></script>
+    <script src="cloud.js"></script>
     <script src="script.js"></script>
     <script>
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
