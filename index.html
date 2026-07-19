@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f5efe3" />
+    <meta name="description" content="一款简洁、舒适、支持多档难度的数独小游戏。" />
+    <meta property="og:title" content="每日数独" />
+    <meta property="og:description" content="静下心来，完成一局数独。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="icons/icon-512.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="每日数独" />
+    <title>每日数独</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="apple-touch-icon" href="icons/icon-192.png" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="hero">
+        <div>
+          <p class="eyebrow">SUDOKU · DAILY PUZZLE</p>
+          <h1>每日数独</h1>
+          <p class="subtitle">静下心来，填满九宫格。</p>
+        </div>
+        <div class="timer-card" aria-label="游戏用时">
+          <span>用时</span>
+          <strong id="timer">00:00</strong>
+        </div>
+      </header>
+
+      <section class="toolbar" aria-label="游戏设置">
+        <label>
+          <span>难度</span>
+          <select id="difficulty">
+            <option value="easy">轻松</option>
+            <option value="medium" selected>标准</option>
+            <option value="hard">挑战</option>
+          </select>
+        </label>
+        <button id="new-game" class="primary" type="button">生成新题</button>
+      </section>
+
+      <section id="game-area" class="game-area waiting">
+        <div>
+          <div class="board-shell">
+            <div id="board" class="board" role="grid" aria-label="数独棋盘"></div>
+            <div id="start-screen" class="start-screen">
+              <span class="start-mark">✦</span>
+              <h2>准备好了吗？</h2>
+              <p>选择难度，开始今天的数独。</p>
+              <button id="start-game" class="primary" type="button">开始游戏</button>
+            </div>
+          </div>
+          <p id="status" class="status" aria-live="polite">点击“开始游戏”后开始计时</p>
+        </div>
+
+        <aside class="panel">
+          <div id="number-pad" class="number-pad" aria-label="数字键盘"></div>
+          <div class="actions">
+            <button id="erase" type="button">擦除</button>
+            <button id="hint" type="button">提示</button>
+            <button id="check" type="button">检查答案</button>
+          </div>
+        </aside>
+      </section>
+    </main>
+
+    <div id="dialog" class="dialog" hidden>
+      <div class="dialog-card" role="dialog" aria-modal="true" aria-labelledby="dialog-title">
+        <span class="celebration">✦</span>
+        <h2 id="dialog-title">完成得漂亮！</h2>
+        <p id="dialog-message"></p>
+        <button id="play-again" class="primary" type="button">再来一局</button>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+      if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+        window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js"));
+      }
+    </script>
+  </body>
+</html>
