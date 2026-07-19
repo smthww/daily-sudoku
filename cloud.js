@@ -32,12 +32,16 @@
 
   async function saveScore(score) {
     await initialize();
-    return database.collection(COLLECTION).add({
+    const result = await database.collection(COLLECTION).add({
       ...score,
       kind: "score",
       userId,
       createdAt: new Date().toISOString(),
     });
+    if (result?.code || (!result?.id && !result?._id)) {
+      throw new Error(result?.message || "成绩未写入云数据库");
+    }
+    return result;
   }
 
   async function getLeaderboard(puzzleId) {
