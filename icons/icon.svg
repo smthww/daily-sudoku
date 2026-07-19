@@ -1,11 +1,35 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-  <rect width="512" height="512" rx="112" fill="#f7f2e7"/>
-  <rect x="82" y="82" width="348" height="348" rx="35" fill="#fbf8f1" stroke="#28342f" stroke-width="18"/>
-  <path d="M198 91v330M314 91v330M91 198h330M91 314h330" stroke="#728879" stroke-width="10"/>
-  <path d="M256 91v330M91 256h330" stroke="#28342f" stroke-width="18"/>
-  <circle cx="140" cy="140" r="25" fill="#ba6b50"/>
-  <circle cx="372" cy="372" r="25" fill="#ba6b50"/>
-  <circle cx="372" cy="140" r="25" fill="#536a5b"/>
-  <circle cx="140" cy="372" r="25" fill="#536a5b"/>
-  <text x="256" y="292" text-anchor="middle" font-family="Georgia, serif" font-size="104" font-weight="700" fill="#28342f">9</text>
+  <defs>
+    <linearGradient id="paper" x1="60" y1="40" x2="460" y2="480" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFDF7"/>
+      <stop offset="1" stop-color="#F1E9D9"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="512" height="512" rx="112" fill="url(#paper)"/>
+
+  <g fill="#DDD8CB">
+    <rect x="48" y="48" width="122" height="122" rx="28"/>
+    <rect x="195" y="48" width="122" height="122" rx="28"/>
+    <rect x="342" y="48" width="122" height="122" rx="28"/>
+    <rect x="48" y="195" width="122" height="122" rx="28"/>
+    <rect x="195" y="195" width="122" height="122" rx="28" fill="#C77457"/>
+    <rect x="342" y="195" width="122" height="122" rx="28"/>
+    <rect x="48" y="342" width="122" height="122" rx="28"/>
+    <rect x="195" y="342" width="122" height="122" rx="28"/>
+    <rect x="342" y="342" width="122" height="122" rx="28"/>
+  </g>
+
+  <g fill="#536A5B">
+    <circle cx="109" cy="109" r="19"/>
+    <circle cx="256" cy="109" r="19"/>
+    <circle cx="403" cy="109" r="19"/>
+    <circle cx="109" cy="256" r="19"/>
+    <circle cx="403" cy="256" r="19"/>
+    <circle cx="109" cy="403" r="19"/>
+    <circle cx="256" cy="403" r="19"/>
+    <circle cx="403" cy="403" r="19"/>
+  </g>
+
+  <path d="M229 256l18 18 38-43" fill="none" stroke="#FFF9ED" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
