@@ -15,7 +15,7 @@ const state = {
   puzzle: Array(81).fill(0), current: Array(81).fill(0), solution: Array(81).fill(0),
   selected: -1, mistakes: new Set(), hints: new Set(), seconds: 0, timerId: null,
   finished: false, started: false, nickname: "", puzzleId: "", dateKey: "",
-  errorCount: 0, hintCount: 0, leaderboard: [],
+  errorCount: 0, hintCount: 0, leaderboard: [], leaderboardRows: [], rankingDifficulty: "medium",
 };
 
 const difficultySettings = {
@@ -204,9 +204,9 @@ function enterNumber(number) {
   if (state.current.every(Boolean)) checkBoard();
 }
 
-function normalizedLeaderboard(rows) {
+function normalizedLeaderboard(rows, difficulty) {
   const bestByUser = new Map();
-  rows.filter((row) => row.ranked === true && Number.isFinite(row.elapsedSeconds)).forEach((row) => {
+  rows.filter((row) => row.ranked === true && row.difficulty === difficulty && Number.isFinite(row.elapsedSeconds)).forEach((row) => {
     const key = row.userId || row._openid || row.nickname;
     const previous = bestByUser.get(key);
     if (!previous || row.elapsedSeconds < previous.elapsedSeconds ||
@@ -236,19 +236,34 @@ function escapeHtml(text) {
 }
 
 async function loadLeaderboard(showLoading = true) {
-  if (!state.puzzleId) return;
+  state.dateKey = state.dateKey || shanghaiDateKey();
   if (showLoading) $("#ranking-preview").textContent = "正在读取…";
   try {
-    const rows = await window.sudokuCloud.getLeaderboard(state.puzzleId);
-    state.leaderboard = normalizedLeaderboard(rows);
-    renderRanking($("#ranking-preview"), 5);
-    renderRanking($("#ranking-full"));
+    state.leaderboardRows = await window.sudokuCloud.getLeaderboard();
+    renderSelectedRanking();
   } catch (error) {
     console.warn("排行榜暂不可用", error);
     $("#ranking-preview").className = "ranking-list muted-list";
     $("#ranking-preview").textContent = "云端暂时未连接，游戏仍可正常进行。";
     $("#ranking-full").textContent = "排行榜暂时无法读取，请稍后再试。";
   }
+}
+
+function renderSelectedRanking() {
+  state.leaderboard = normalizedLeaderboard(state.leaderboardRows, state.rankingDifficulty);
+  document.querySelectorAll("[data-ranking-difficulty]").forEach((button) => {
+    button.classList.toggle("active", button.dataset.rankingDifficulty === state.rankingDifficulty);
+  });
+  const setting = difficultySettings[state.rankingDifficulty];
+  $("#ranking-subtitle").textContent = `${setting.label}难度 · 历史最佳成绩`;
+  renderRanking($("#ranking-preview"), 5);
+  renderRanking($("#ranking-full"));
+}
+
+function selectRankingDifficulty(difficulty) {
+  if (!difficultySettings[difficulty]) return;
+  state.rankingDifficulty = difficulty;
+  renderSelectedRanking();
 }
 
 async function completeGame() {
@@ -266,7 +281,8 @@ async function completeGame() {
       nickname: state.nickname, elapsedSeconds: state.seconds, mistakes: state.errorCount,
       hints: state.hintCount, ranked,
     });
-    $("#submit-message").textContent = ranked ? "成绩已保存到今日排行榜。" : "成绩已保存；本局使用了提示，不计入排名。";
+    $("#submit-message").textContent = ranked ? "成绩已保存到排行榜。" : "成绩已保存；本局使用了提示，不计入排名。";
+    state.rankingDifficulty = difficultyElement.value;
     await loadLeaderboard(false);
   } catch (error) {
     console.error("成绩保存失败", error);
@@ -364,8 +380,8 @@ function newGame() {
       state.started = true;
       renderBoard();
       startTimer();
-      setStatus(`${setting.label}难度 · 今日同题 · 加油！`, "success-text");
-      $("#ranking-subtitle").textContent = `${state.dateKey} · ${setting.label}难度`;
+      setStatus(`${setting.label}难度 · 排行挑战 · 加油！`, "success-text");
+      state.rankingDifficulty = difficultyElement.value;
       loadLeaderboard();
     } catch (error) {
       console.error(error);
@@ -407,7 +423,14 @@ $("#player-button").addEventListener("click", () => {
   clearInterval(state.timerId);
   nicknameElement.focus();
 });
-difficultyElement.addEventListener("change", () => { if (state.started) newGame(); });
+difficultyElement.addEventListener("change", () => {
+  state.rankingDifficulty = difficultyElement.value;
+  renderSelectedRanking();
+  if (state.started) newGame();
+});
+document.querySelectorAll("[data-ranking-difficulty]").forEach((button) => {
+  button.addEventListener("click", () => selectRankingDifficulty(button.dataset.rankingDifficulty));
+});
 nicknameElement.addEventListener("keydown", (event) => { if (event.key === "Enter") startGame(); });
 rankingDialogElement.addEventListener("click", (event) => { if (event.target === rankingDialogElement) rankingDialogElement.hidden = true; });
 
@@ -425,4 +448,6 @@ document.addEventListener("keydown", (event) => {
 const savedNickname = localStorage.getItem("sudokuNickname") || "";
 nicknameElement.value = savedNickname;
 if (savedNickname) $("#player-button").textContent = `玩家：${savedNickname}`;
+state.dateKey = shanghaiDateKey();
 renderBoard();
+loadLeaderboard();

@@ -16,7 +16,7 @@
     <link rel="manifest" href="manifest.webmanifest" />
     <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
     <link rel="apple-touch-icon" href="icons/icon-192.png" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=7" />
   </head>
   <body>
     <main class="app">
@@ -74,12 +74,17 @@
           <section class="ranking-card" aria-labelledby="ranking-title">
             <div class="ranking-heading">
               <div>
-                <span>今日同难度</span>
+                <span>历史最佳</span>
                 <h2 id="ranking-title">好友榜</h2>
               </div>
               <button id="show-ranking" class="text-button" type="button">查看全部</button>
             </div>
-            <div id="ranking-preview" class="ranking-list muted-list">开始游戏后显示排行榜</div>
+            <div class="ranking-tabs" aria-label="排行榜难度">
+              <button type="button" data-ranking-difficulty="easy">轻松</button>
+              <button type="button" data-ranking-difficulty="medium" class="active">标准</button>
+              <button type="button" data-ranking-difficulty="hard">挑战</button>
+            </div>
+            <div id="ranking-preview" class="ranking-list muted-list">正在读取排行榜…</div>
           </section>
         </aside>
       </section>
@@ -102,15 +107,20 @@
       <div class="dialog-card ranking-dialog-card" role="dialog" aria-modal="true" aria-labelledby="full-ranking-title">
         <button id="close-ranking" class="close-button" type="button" aria-label="关闭排行榜">×</button>
         <span class="celebration">♜</span>
-        <h2 id="full-ranking-title">今日排行榜</h2>
+        <h2 id="full-ranking-title">总排行榜</h2>
         <p id="ranking-subtitle"></p>
+        <div class="ranking-tabs ranking-tabs-large" aria-label="完整排行榜难度">
+          <button type="button" data-ranking-difficulty="easy">轻松</button>
+          <button type="button" data-ranking-difficulty="medium" class="active">标准</button>
+          <button type="button" data-ranking-difficulty="hard">挑战</button>
+        </div>
         <div id="ranking-full" class="ranking-list full-ranking muted-list">正在读取…</div>
       </div>
     </div>
 
     <script src="vendor/cloudbase.full.js"></script>
-    <script src="cloud.js"></script>
-    <script src="script.js"></script>
+    <script src="cloud.js?v=7"></script>
+    <script src="script.js?v=7"></script>
     <script>
       if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
         window.addEventListener("load", () => navigator.serviceWorker.register("service-worker.js"));

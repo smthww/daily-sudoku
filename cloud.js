@@ -44,13 +44,20 @@
     return result;
   }
 
-  async function getLeaderboard(puzzleId) {
+  async function getLeaderboard() {
     await initialize();
-    const result = await database.collection(COLLECTION)
-      .where({ puzzleId, kind: "score" })
-      .limit(100)
-      .get();
-    return Array.isArray(result?.data) ? result.data : [];
+    const rows = [];
+    for (let offset = 0; offset < 1000; offset += 100) {
+      const result = await database.collection(COLLECTION)
+        .where({ kind: "score" })
+        .skip(offset)
+        .limit(100)
+        .get();
+      const page = Array.isArray(result?.data) ? result.data : [];
+      rows.push(...page);
+      if (page.length < 100) break;
+    }
+    return rows;
   }
 
   window.sudokuCloud = {

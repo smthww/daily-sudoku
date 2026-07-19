@@ -92,7 +92,7 @@ button:focus-visible, select:focus-visible, input:focus-visible, .cell:focus-vis
 .status.success-text { color: var(--sage-dark); font-weight: 700; }
 
 .panel { width: 245px; padding: 18px; border-radius: 22px; background: rgba(255,255,255,.55); box-shadow: 0 12px 35px rgba(48,54,46,.08); }
-.game-area.waiting .panel { opacity: .45; pointer-events: none; }
+.game-area.waiting .number-pad, .game-area.waiting .actions { opacity: .45; pointer-events: none; }
 .number-pad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
 .number-pad button { aspect-ratio: 1; padding: 0; font-size: 1.35rem; font-weight: 700; background: var(--paper); box-shadow: inset 0 0 0 1px #d9d2c3; }
 .number-pad button:hover { background: var(--cream); }
@@ -104,6 +104,12 @@ button:focus-visible, select:focus-visible, input:focus-visible, .cell:focus-vis
 .ranking-heading h2 { margin: 1px 0 0; font-family: Georgia, "Songti SC", serif; font-size: 1.25rem; font-weight: 500; }
 .text-button { padding: 5px; color: var(--terracotta); background: transparent; font-size: .75rem; }
 .text-button:hover { transform: none; background: transparent; text-decoration: underline; }
+.ranking-tabs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 10px; padding: 4px; border-radius: 11px; background: #e8e3d7; }
+.ranking-tabs button { padding: 6px 4px; border-radius: 8px; color: var(--muted); background: transparent; font-size: .7rem; }
+.ranking-tabs button:hover { transform: none; background: rgba(255,255,255,.5); }
+.ranking-tabs button.active { color: white; background: var(--sage-dark); font-weight: 800; }
+.ranking-tabs-large { width: min(290px, 100%); margin: 15px auto; }
+.ranking-tabs-large button { padding-block: 8px; font-size: .8rem; }
 .ranking-list { display: grid; gap: 6px; }
 .ranking-row { display: grid; grid-template-columns: 28px 1fr auto; align-items: center; gap: 7px; min-height: 32px; padding: 5px 8px; border-radius: 9px; background: rgba(251,248,241,.78); font-size: .78rem; }
 .ranking-row.me { outline: 2px solid rgba(186,107,80,.42); background: #fff5eb; }

@@ -1,10 +1,10 @@
-const CACHE_NAME = "daily-sudoku-v4";
+const CACHE_NAME = "daily-sudoku-v7";
 const APP_ASSETS = [
   "./",
   "./index.html",
-  "./style.css",
-  "./script.js",
-  "./cloud.js",
+  "./style.css?v=7",
+  "./script.js?v=7",
+  "./cloud.js?v=7",
   "./vendor/cloudbase.full.js",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
